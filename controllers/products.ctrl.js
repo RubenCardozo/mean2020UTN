@@ -9,7 +9,7 @@ module.exports = {
         if(req.query.toSearch){
             searching={name:{$regex:'.*'+req.query.toSearch+'.*'}};
         }
-        let products = await productosModel.find(searching);
+        let products = await Product.find(searching);
         res.json(products);
     },
 
@@ -26,9 +26,9 @@ module.exports = {
     save: async (req, res, next) => {
         const newProduct = new Product({
             name:req.body.name,
-            description:req.body.description,
             price:req.body.price,
             sku:req.body.sku,
+            description:req.body.description,
             category:req.body.category
         })
         let dataProduct = await newProduct.save();
@@ -37,7 +37,8 @@ module.exports = {
 
     //Update products
     update: async (req, res, next) => {
-        let product = await Product.findByIdAndUpdate({_id:req.params.id},req.body,{multi:false})
+        let product = await Product.findByIdAndUpdate(
+            {_id:req.params.id},req.body,{multi:false});
         res.json(product);
     },
 
